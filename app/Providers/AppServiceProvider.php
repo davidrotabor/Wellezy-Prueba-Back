@@ -10,19 +10,19 @@ class AppServiceProvider extends ServiceProvider
 {
 
     /**
- * @OA\Info(
- *     title="API de Gestión de Vuelos",
- *     version="1.0.0",
- *     description="Esta es la documentación de la API para gestionar vuelos, desarrollada en Laravel.",
- *     @OA\Contact(
- *         email="soporte@example.com"
- *     ),
- *     @OA\License(
- *         name="MIT",
- *         url="https://opensource.org/licenses/MIT"
- *     )
- * )
- */
+     * @OA\Info(
+     *     title="API de Gestión de Vuelos",
+     *     version="1.0.0",
+     *     description="Esta es la documentación de la API para gestionar vuelos, desarrollada en Laravel.",
+     *     @OA\Contact(
+     *         email="soporte@example.com"
+     *     ),
+     *     @OA\License(
+     *         name="MIT",
+     *         url="https://opensource.org/licenses/MIT"
+     *     )
+     * )
+     */
 
     /**
      * Register any application services.
@@ -37,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-     Schema::defaultStringLength(191);
+        if (env('APP_ENV') !== 'production') {
+            URL::forceScheme('https');
+        }
+        Schema::defaultStringLength(191);
     }
 }
