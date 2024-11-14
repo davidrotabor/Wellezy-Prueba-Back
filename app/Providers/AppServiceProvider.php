@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\URL;
+
+if (env('APP_ENV') == 'local') {
+    URL::forceScheme('https');
+}
 
 class AppServiceProvider extends ServiceProvider
 {
