@@ -1,0 +1,991 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API de Gestión de Vuelos",
+        "description": "Documentación de la API para gestionar vuelos.",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/flights": {
+            "get": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Obtener todos los vuelos",
+                "operationId": "3254b18ad6bc488e245dd7ee65b65613",
+                "responses": {
+                    "200": {
+                        "description": "Lista de vuelos",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Flight"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error fetching flights"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Crear un vuelo",
+                "operationId": "93ae933bfd08abc1b0d9b6d2a7098b7d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "departureCity": {
+                                        "type": "string",
+                                        "example": "New York"
+                                    },
+                                    "arrivalCity": {
+                                        "type": "string",
+                                        "example": "London"
+                                    },
+                                    "dateDeparture": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-15T08:00:00Z"
+                                    },
+                                    "dateArrival": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-15T16:00:00Z"
+                                    },
+                                    "itinerary_id": {
+                                        "type": "integer",
+                                        "example": 123
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Vuelo creado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al guardar el vuelo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error saving flight"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/flights/{id}": {
+            "get": {
+                "tags": [
+                    "Flights"
+                ],
+                "summary": "Obtener un vuelo por ID",
+                "operationId": "eadd276d0ccd85e13783b6f5b43d9ed2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del vuelo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del vuelo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Flight"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Vuelo no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Flight not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al obtener el vuelo",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error fetching flight"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/itineraries": {
+            "get": {
+                "tags": [
+                    "Itineraries"
+                ],
+                "summary": "Obtener todos los itinerarios",
+                "operationId": "5d90235e7073a0dd32b06187499076eb",
+                "responses": {
+                    "200": {
+                        "description": "Lista de itinerarios",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Itinerary"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error fetching itineraries"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Itineraries"
+                ],
+                "summary": "Crear un itinerario",
+                "operationId": "d7630299125a9d026d981991fe9985ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "departureCity": {
+                                        "type": "string",
+                                        "example": "New York"
+                                    },
+                                    "arrivalCity": {
+                                        "type": "string",
+                                        "example": "London"
+                                    },
+                                    "dateDeparture": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-15"
+                                    },
+                                    "timeDeparture": {
+                                        "type": "string",
+                                        "example": "08:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Itinerario creado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al guardar el itinerario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error saving itinerary"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/itineraries/{id}": {
+            "get": {
+                "tags": [
+                    "Itineraries"
+                ],
+                "summary": "Obtener un itinerario por ID",
+                "operationId": "543512c6aaff0208b840f1c9f2da2d24",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del itinerario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del itinerario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Itinerary"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Itinerario no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Itinerary not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al obtener el itinerario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error fetching itinerary"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Itineraries"
+                ],
+                "summary": "Actualizar un itinerario",
+                "operationId": "3d2ee20340d4ad0450df3c3eb7b7b7b2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del itinerario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "departureCity": {
+                                        "type": "string",
+                                        "example": "New York"
+                                    },
+                                    "arrivalCity": {
+                                        "type": "string",
+                                        "example": "London"
+                                    },
+                                    "dateDeparture": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-15"
+                                    },
+                                    "timeDeparture": {
+                                        "type": "string",
+                                        "example": "08:00:00"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Itinerario actualizado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Itinerary updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al actualizar el itinerario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error updating itinerary"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Itineraries"
+                ],
+                "summary": "Eliminar un itinerario",
+                "operationId": "b89ac2f7c7f4bfe82f850914f93240df",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del itinerario",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Itinerario eliminado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Itinerary deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al eliminar el itinerario",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error deleting itinerary"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/passengers": {
+            "get": {
+                "tags": [
+                    "Passengers"
+                ],
+                "summary": "Obtener todos los pasajeros",
+                "operationId": "394569dcd7779a3b1f56d881fa221a02",
+                "responses": {
+                    "200": {
+                        "description": "Lista de pasajeros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Passenger"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error fetching passengers"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Passengers"
+                ],
+                "summary": "Crear un pasajero",
+                "operationId": "f4c846bd1a08e31831bff994899aa418",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "idNumber": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string",
+                                        "example": "555-1234"
+                                    },
+                                    "itinerary_id": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pasajero creado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error al guardar el pasajero",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error saving passenger"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/passengers/{id}": {
+            "get": {
+                "tags": [
+                    "Passengers"
+                ],
+                "summary": "Obtener un pasajero por ID",
+                "operationId": "3f64e30d6bff7658877062761b4ade90",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del pasajero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalles del pasajero",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Passenger"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pasajero no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Passenger not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error fetching passenger"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Passengers"
+                ],
+                "summary": "Actualizar un pasajero",
+                "operationId": "05bf07ab27b1163f073ac785bde9687a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del pasajero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "idNumber": {
+                                        "type": "string",
+                                        "example": "123456789"
+                                    },
+                                    "phoneNumber": {
+                                        "type": "string",
+                                        "example": "555-1234"
+                                    },
+                                    "itinerary_id": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pasajero actualizado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Passenger updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pasajero no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Passenger not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error updating passenger"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Passengers"
+                ],
+                "summary": "Eliminar un pasajero",
+                "operationId": "439cc243b528531bb91b9422d2c0ae8e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del pasajero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pasajero eliminado con éxito",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Passenger deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pasajero no encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Passenger not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error interno del servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Error deleting passenger"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Detalles del error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Flight": {
+                "title": "Flight Schema",
+                "description": "Esquema de un vuelo",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "departureCity": {
+                        "type": "string",
+                        "example": "New York"
+                    },
+                    "arrivalCity": {
+                        "type": "string",
+                        "example": "London"
+                    },
+                    "dateDeparture": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T08:00:00Z"
+                    },
+                    "dateArrival": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15T16:00:00Z"
+                    },
+                    "itinerary_id": {
+                        "type": "integer",
+                        "example": 123
+                    }
+                },
+                "type": "object"
+            },
+            "Itinerary": {
+                "title": "Itinerary Schema",
+                "description": "Esquema de un itinerario",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "departureCity": {
+                        "type": "string",
+                        "example": "New York"
+                    },
+                    "arrivalCity": {
+                        "type": "string",
+                        "example": "London"
+                    },
+                    "dateDeparture": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-15"
+                    },
+                    "timeDeparture": {
+                        "type": "string",
+                        "example": "08:00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "Passenger": {
+                "title": "Passenger Schema",
+                "description": "Esquema de un pasajero",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "idNumber": {
+                        "type": "string",
+                        "example": "123456789"
+                    },
+                    "phoneNumber": {
+                        "type": "string",
+                        "example": "555-1234"
+                    },
+                    "itinerary_id": {
+                        "type": "integer",
+                        "example": 10
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Flights",
+            "description": "Flights"
+        },
+        {
+            "name": "Itineraries",
+            "description": "Itineraries"
+        },
+        {
+            "name": "Passengers",
+            "description": "Passengers"
+        }
+    ]
+}
